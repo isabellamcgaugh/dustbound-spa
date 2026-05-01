@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Dustbound</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Mono:wght@400;700&family=Nunito+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app-frame" class="mobile-frame nav-hidden">
+    <!-- Splash screen -->
+    <section id="screen-splash" class="screen screen-active" aria-label="Dustbound splash">
+      <div class="splash-inner">
+        <p class="nest-app-title splash-title">DUSTBOUND</p>
+        <video id="splash-video" class="splash-video-source" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+          <source src="assets/splash-key.mp4" type="video/mp4" />
+        </video>
+        <canvas id="splash-canvas" class="splash-media" aria-hidden="true"></canvas>
+      </div>
+    </section>
+
+    <!-- Login (shown until session exists) -->
+    <section id="screen-login" class="screen" aria-label="Sign in">
+      <header class="lab-header">
+        <h1 class="screen-title">Account</h1>
+      </header>
+      <div class="lab-scroll">
+        <p class="nest-app-title">DUSTBOUND</p>
+        <p class="lab-intro muted small">Sign in to your account, or create one to keep your own progress and memory jar on this browser.</p>
+        <form id="login-form" class="habit-form" autocomplete="on">
+          <label class="field">
+            <span>Profile name (for new account)</span>
+            <input
+              id="login-display-name"
+              type="text"
+              name="displayName"
+              maxlength="80"
+              autocomplete="name"
+              placeholder="e.g. Bella"
+            />
+            <span class="field-hint muted small">Required when creating a new account.</span>
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input
+              id="login-email"
+              type="email"
+              name="email"
+              required
+              maxlength="200"
+              autocomplete="username"
+              placeholder="you@example.com"
+            />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input
+              id="login-password"
+              type="password"
+              name="password"
+              required
+              maxlength="500"
+              autocomplete="current-password"
+              placeholder="••••••••"
+            />
+          </label>
+          <div class="login-actions">
+            <button type="submit" class="btn btn-primary btn-block" name="auth_action" value="signin">Sign In</button>
+            <button type="submit" class="btn btn-soft btn-block" name="auth_action" value="signup">Create Account</button>
+          </div>
+          <p class="small muted login-note" id="login-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Screen 1: The Nest -->
+    <section id="screen-nest" class="screen app-screen" aria-label="The Nest">
+      <p class="nest-hint muted small">A cozy room for your sprite. Tap floating motes to choose a level. Energy changes the light.</p>
+      <div class="nest-canvas">
+        <div class="nest-ambient" id="nest-ambient" aria-hidden="true"></div>
+        <div class="sprite-wrap" id="sprite-wrap">
+          <div class="sprite-character-slot">
+            <div class="sprite-speech sprite-speech-nap" id="sprite-speech-nap" hidden>
+              <p>Sprite nap: expectations are paused. Rest is part of the ritual.</p>
+            </div>
+            <div class="sprite-speech sprite-speech-fog" id="sprite-speech-fog" hidden>
+              <p>Just this one little thing, then we rest.</p>
+            </div>
+            <div class="dust-sprite" id="dust-sprite" aria-hidden="true">
+              <div class="dust-sprite-perspective">
+                <div class="dust-character-breathe" id="dust-character-breathe">
+                  <div class="dust-character-stack" aria-hidden="true">
+                    <img class="dust-layer dust-layer-sad" src="assets/dust-sad.png" alt="" width="512" height="512" decoding="async" />
+                    <img class="dust-layer dust-layer-resting" src="assets/dust-resting.png" alt="" width="512" height="512" decoding="async" />
+                    <img class="dust-layer dust-layer-excited" src="assets/dust-excited.png" alt="" width="512" height="512" decoding="async" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="motes-layer" id="motes-layer" aria-live="polite"></div>
+        <div class="nest-front-controls">
+          <div class="nap-toggle-row">
+            <div class="nap-toggle-labels">
+              <span class="nap-label-strong" id="nap-label-title">Sprite Nap</span>
+              <span class="nap-label-sub muted small" id="nap-label-sub">Quiet day — fewer prompts in the Nest</span>
+            </div>
+            <button type="button" class="nap-toggle" id="nap-toggle" role="switch" aria-checked="false" aria-labelledby="nap-label-toggle">
+              <span class="visually-hidden" id="nap-label-toggle">Turn on sprite nap for a quieter day in the Nest</span>
+              <span class="nap-toggle-track">
+                <span class="nap-toggle-knob" aria-hidden="true">
+                  <svg class="nap-icon sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor" /><g stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></g></svg>
+                  <svg class="nap-icon moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 14.5A8.5 8.5 0 0 1 9.5 3a6.5 6.5 0 1 0 11.5 11.5z" /></svg>
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 2: Habits -->
+    <section id="screen-lab" class="screen app-screen" aria-label="Habits">
+      <header class="lab-header">
+        <h1 class="screen-title">Habits</h1>
+      </header>
+      <div class="lab-scroll">
+        <p class="lab-intro muted small">Each habit has three step sizes. The thumbnail shows how your sprite looks for bigger “full” tasks.</p>
+        <div class="sensory-card">
+          <div class="sensory-card-head">
+            <span class="sensory-card-title">Sensory flare mode</span>
+            <button type="button" class="nap-toggle sensory-toggle" id="sensory-flare-toggle" role="switch" aria-checked="false" aria-labelledby="sensory-label">
+              <span class="visually-hidden" id="sensory-label">Ultra low stimulation — warm amber tones, slower motion, capped brightness, larger text</span>
+              <span class="nap-toggle-track"><span class="nap-toggle-knob" aria-hidden="true"></span></span>
+            </button>
+          </div>
+          <p class="muted small sensory-hint">For migraine or flare days: softer colors, slower sprites and motes, bigger type, dimmer overall.</p>
+        </div>
+        <ul class="habit-list" id="habit-list"></ul>
+        <button type="button" class="btn btn-primary btn-block" id="btn-add-habit">Add habit or chore</button>
+      </div>
+    </section>
+
+    <!-- Screen: Add habit / chore -->
+    <section id="screen-add" class="screen app-screen" aria-label="Add habit or chore">
+      <header class="add-habit-header">
+        <button type="button" class="btn-back" id="btn-add-back" aria-label="Back to Habits">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.5 5 8 12l7.5 7 1.4-1.4L10.8 12l6.1-5.6L15.5 5z"/></svg>
+        </button>
+        <h1 class="screen-title add-habit-title">Add habit or chore</h1>
+      </header>
+      <div class="add-habit-scroll">
+        <p class="muted small">Choose Habit or Chore, then narrow by type/room. Spoons decide your energy profile automatically.</p>
+        <form id="habit-form-screen" class="habit-form">
+          <label class="field">
+            <span>Task type</span>
+            <select id="task-kind" name="kind">
+              <option value="habit">Habit</option>
+              <option value="chore">Chore</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Category</span>
+            <select id="task-category" name="category"></select>
+          </label>
+          <label class="field">
+            <span>Template</span>
+            <select id="task-template" name="template" aria-describedby="template-hint">
+              <option value="">Custom — I’ll write my own</option>
+            </select>
+            <span id="template-hint" class="field-hint muted small">Choose a template to auto-fill name, spoons, and all levels. Edit anything before saving.</span>
+          </label>
+          <label class="field">
+            <span>Name</span>
+            <input type="text" name="name" required maxlength="80" autocomplete="off" placeholder="e.g. Dishes, meds, email inbox" />
+          </label>
+          <label class="field">
+            <span>Spoons required (1-12)</span>
+            <input type="number" id="task-spoons" name="spoons" min="1" max="12" step="1" value="3" required />
+            <span class="field-hint muted small">Lower spoons = gentler tasks. This powers automatic Low / Medium / High energy logic.</span>
+          </label>
+          <label class="field">
+            <span>Energy profile (auto)</span>
+            <input type="text" id="habit-intensity-label" value="Medium energy" readonly />
+            <input type="hidden" name="intensity" id="habit-intensity" value="medium" />
+            <span id="intensity-hint" class="field-hint muted small">Preview thumbnail and nest behavior use this auto profile.</span>
+          </label>
+          <label class="field">
+            <span>Level 1 — Full</span>
+            <textarea name="lvl1" rows="3" required maxlength="500" placeholder="The version you do on a good day"></textarea>
+          </label>
+          <label class="field">
+            <span>Level 2 — Modified</span>
+            <textarea name="lvl2" rows="3" required maxlength="500" placeholder="A middle path"></textarea>
+          </label>
+          <label class="field">
+            <span>Level 3 — Minimal</span>
+            <textarea name="lvl3" rows="3" required maxlength="500" placeholder="The tiniest honest step"></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">Save habit</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Screen 3: Memory Jar -->
+    <section id="screen-jar" class="screen app-screen" aria-label="Memory Jar">
+      <div class="jar-screen-inner">
+        <h1 class="screen-title jar-title">Memory Jar</h1>
+        <div class="jar-visual-card">
+        <div class="jar-wrap">
+          <svg class="jar-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <clipPath id="jar-clip">
+                <path d="M52 48 L148 48 L156 72 L156 200 Q156 220 138 220 L62 220 Q44 220 44 200 L44 72 Z" />
+              </clipPath>
+            </defs>
+            <path class="jar-outline" d="M50 46 L150 46 L158 70 L158 200 Q158 224 136 224 L64 224 Q42 224 42 200 L42 70 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+            <rect x="46" y="46" width="108" height="14" rx="7" fill="currentColor" opacity="0.15" />
+            <g clip-path="url(#jar-clip)">
+              <rect x="42" y="72" width="116" height="156" fill="var(--jar-inner, rgba(255,255,255,0.06))" />
+            </g>
+          </svg>
+          <div class="jar-stack-wrap" id="jar-stack-wrap">
+            <div class="jar-stack" id="jar-stack"></div>
+          </div>
+        </div>
+        </div>
+        <div class="jar-copy small">
+          <p><strong>Gold motes:</strong> Every Level 3 you finish during a flare-up (low energy) becomes a glowing gold sparkle in the jar — proof you listened to your body.</p>
+        </div>
+        <div class="skymap-section">
+          <h2 class="subheading">Month at a glance</h2>
+          <p class="muted small" id="skymap-caption"></p>
+          <div class="skymap" id="skymap" role="img" aria-label="Calendar of your month in the jar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Radial menu (Nest) -->
+    <div class="radial-backdrop" id="radial-backdrop" hidden></div>
+    <div class="radial-menu" id="radial-menu" role="dialog" aria-modal="true" aria-labelledby="radial-habit-name" hidden>
+      <p class="radial-title" id="radial-habit-name"></p>
+      <button type="button" class="radial-choice radial-top btn-minimal-pulse" data-level="1">Full strength</button>
+      <button type="button" class="radial-choice radial-mid" data-level="2">Modified</button>
+      <button type="button" class="radial-choice radial-bottom btn-minimal-pulse" data-level="3">Minimal</button>
+      <button type="button" class="radial-close" id="radial-close" aria-label="Close menu">✕</button>
+    </div>
+
+    <!-- Morning check-in (emoji + sprite asks) -->
+    <div class="modal-backdrop" id="morning-backdrop" hidden></div>
+    <div class="modal checkin-modal" id="morning-modal" role="dialog" aria-modal="true" aria-labelledby="morning-title" hidden>
+      <div class="checkin-sprite-wrap" aria-hidden="true">
+        <div class="checkin-character" id="checkin-character" data-mood="3">
+          <img class="checkin-layer checkin-sad" src="assets/dust-sad.png" alt="" width="256" height="256" decoding="async" />
+          <img class="checkin-layer checkin-resting" src="assets/dust-resting.png" alt="" width="256" height="256" decoding="async" />
+          <img class="checkin-layer checkin-excited" src="assets/dust-excited.png" alt="" width="256" height="256" decoding="async" />
+        </div>
+      </div>
+      <h2 id="morning-title" class="modal-title checkin-title">How are we feeling today?</h2>
+      <p class="muted checkin-sub">Tap a face — your sprite matches your energy.</p>
+      <div class="emoji-picker" id="energy-picker" role="group" aria-label="How we feel today"></div>
+      <p class="energy-label muted small" id="energy-label" aria-live="polite"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-soft" id="morning-skip">Not now</button>
+        <button type="button" class="btn btn-primary" id="morning-save">Save</button>
+      </div>
+    </div>
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Main navigation">
+      <button type="button" class="nav-btn nav-active" data-screen="nest" aria-current="page">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" /></svg>
+        <span>Nest</span>
+      </button>
+      <button type="button" class="nav-btn" data-screen="lab">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M9 2h6l1 2v14a4 4 0 0 1-8 0V4l1-2zm2.2 2L10 4.9V17a2 2 0 0 0 4 0V4.9L12.8 4h-1.6zM8 20h8v2H8v-2z" />
+        </svg>
+        <span>Lab</span>
+      </button>
+      <button type="button" class="nav-btn" data-screen="jar">
+        <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 4h12v2h-1l-1 8 1 8H7l1-8-1-8H6V4zm2 2v2h8V6H8zm1.5 4 1 8h5l1-8H9.5z" /></svg>
+        <span>Jar</span>
+      </button>
+    </nav>
+
+    <div id="particle-layer" class="particle-layer" aria-hidden="true"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
