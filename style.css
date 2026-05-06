@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: "Hairy Monster Solid";
-  src: url("assets/fonts/HairyMonsterSolid.ttf") format("truetype");
+  src: url("fonts/HairyMonsterSolid.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "Hairy Monster";
-  src: url("assets/fonts/HairyMonster.ttf") format("truetype");
+  src: url("fonts/HairyMonster.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

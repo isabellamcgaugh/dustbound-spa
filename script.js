@@ -926,10 +926,10 @@
     const cls = intensity === "high" ? "high" : intensity === "low" ? "low" : "medium";
     const src =
       intensity === "high"
-        ? "assets/dust-excited.png"
+        ? "dust-excited.png"
         : intensity === "low"
-          ? "assets/dust-sad.png"
-          : "assets/dust-resting.png";
+          ? "dust-sad.png"
+          : "dust-resting.png";
     return `<div class="habit-sprite-preview ${cls}" title="Sprite mood for your “full” version"><img class="habit-sprite-img" src="${src}" alt="" width="96" height="96" decoding="async" /></div>`;
   }
 
