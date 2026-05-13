@@ -1138,6 +1138,31 @@
     });
   }
 
+  function formatSplashDateTime(now) {
+    const d = now instanceof Date ? now : new Date();
+    const datePart = d.toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+    const timePart = d.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+    return `${datePart} • ${timePart}`;
+  }
+
+  function startSplashClock() {
+    const el = document.getElementById("splash-datetime");
+    if (!el) return () => {};
+    const update = () => {
+      el.textContent = formatSplashDateTime(new Date());
+    };
+    update();
+    const timer = window.setInterval(update, 30000);
+    return () => window.clearInterval(timer);
+  }
+
   function boot() {
     const splash = document.getElementById("screen-splash");
     const login = document.getElementById("screen-login");
@@ -1150,8 +1175,10 @@
     if (splashVideo && splashCanvas) {
       setupSplashChromaKey(splashVideo, splashCanvas);
     }
+    const stopSplashClock = startSplashClock();
 
     window.setTimeout(() => {
+      stopSplashClock();
       splash.classList.remove("screen-active");
       splash.hidden = true;
       login.classList.add("screen-active");
