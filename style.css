@@ -2466,7 +2466,7 @@ body.sensory-flare-mode .mote {
 
 .login-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.55rem;
 }
 
@@ -2806,8 +2806,8 @@ body.sensory-flare-mode .field select {
   margin: 0;
   width: min(92%, 430px);
   text-align: center;
-  color: #1d3150;
-  -webkit-text-fill-color: #1d3150;
+  color: #4f545e;
+  -webkit-text-fill-color: #4f545e;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
   z-index: 2;
 }
@@ -2899,9 +2899,21 @@ body.sensory-flare-mode .field select {
 
 /* Keep all Hairy Monster title text in a deeper blue. */
 .nest-app-title {
-  color: #1d3150;
-  -webkit-text-fill-color: #1d3150;
+  color: #4f545e;
+  -webkit-text-fill-color: #4f545e;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.nest-home-title {
+  position: absolute;
+  top: 4.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 320px);
+  margin: 0;
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
 }
 
 /* Layout polish pass */

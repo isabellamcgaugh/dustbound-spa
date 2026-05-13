@@ -1082,6 +1082,16 @@
       const email = normalizeEmail(form.elements.email && form.elements.email.value);
       const password = String(form.elements.password && form.elements.password.value || "");
       const displayName = String(form.elements.displayName && form.elements.displayName.value || "").trim();
+      if (action === "demo") {
+        state.currentUserEmail = "demo@dustbound.local";
+        state.currentUserProfile = { displayName: "Demo" };
+        localStorage.setItem(AUTH_STORAGE.session, state.currentUserEmail);
+        localStorage.setItem("userLoggedIn", "1");
+        if (statusEl) statusEl.textContent = "Demo mode enabled.";
+        enterMainApp();
+        initApp();
+        return;
+      }
       if (!isValidEmail(email)) {
         if (statusEl) statusEl.textContent = "Please enter a valid email address.";
         showToast("Enter a valid email address.");
